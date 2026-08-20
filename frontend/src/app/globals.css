@@ -1,0 +1,107 @@
+/* frontend/src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* SmartMarket DZ design tokens -- "Sirocco" palette.
+       Petrol teal (analytical/trust) + warm ochre accent (sparingly, evokes
+       Algerian architecture/desert without leaning on the generic cream+terracotta
+       combo) on a cool neutral background rather than warm cream. */
+    --background: 150 12% 97%;
+    --foreground: 200 35% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 35% 10%;
+
+    --primary: 178 68% 24%;
+    --primary-foreground: 150 20% 98%;
+
+    --secondary: 200 20% 94%;
+    --secondary-foreground: 200 35% 14%;
+
+    --muted: 200 15% 93%;
+    --muted-foreground: 200 12% 40%;
+
+    --accent: 32 58% 55%;
+    --accent-foreground: 200 35% 10%;
+
+    --destructive: 5 65% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 152 45% 34%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 32 75% 45%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 200 15% 87%;
+    --input: 200 15% 87%;
+    --ring: 178 68% 24%;
+
+    --radius: 0.625rem;
+
+    --font-display: var(--font-display-sans), ui-serif, Georgia, serif;
+    --font-body: var(--font-body-sans), ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-mono-sans), ui-monospace, 'SF Mono', monospace;
+  }
+
+  .dark {
+    --background: 200 35% 8%;
+    --foreground: 150 15% 95%;
+    --card: 200 30% 11%;
+    --card-foreground: 150 15% 95%;
+    --primary: 176 55% 46%;
+    --primary-foreground: 200 35% 8%;
+    --secondary: 200 25% 16%;
+    --secondary-foreground: 150 15% 92%;
+    --muted: 200 25% 16%;
+    --muted-foreground: 200 10% 65%;
+    --accent: 32 55% 58%;
+    --accent-foreground: 200 35% 8%;
+    --destructive: 5 60% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 152 40% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 65% 55%;
+    --warning-foreground: 200 35% 8%;
+    --border: 200 25% 20%;
+    --input: 200 25% 20%;
+    --ring: 176 55% 46%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  .font-mono-data {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Respect reduced-motion preference throughout the app */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus ring everywhere, including RTL */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}

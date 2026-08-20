@@ -1,0 +1,73 @@
+# render.yaml
+# Render Blueprint for SmartMarket DZ (preview/demo deployment).
+#
+# Deliberately excludes Redis and the Celery worker: nothing in the codebase
+# currently dispatches jobs to Celery (every analytics/cleaning job runs
+# synchronously inside the API request — see README "What's left"), so a
+# worker service would just be a paid instance doing nothing.
+#
+# File storage (uploads, generated reports) is NOT persistent on Render's
+# free web service tier — no disk is attached here. Uploaded datasets will
+# be lost on redeploy/restart. Add a paid disk (services[].disk) if you need
+# uploads to survive restarts.
+
+databases:
+  - name: smartmarket-db
+    databaseName: smartmarket
+    user: smartmarket
+    plan: free
+
+services:
+  - type: web
+    name: smartmarket-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: >
+      alembic upgrade head &&
+      uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: ENVIRONMENT
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "7"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: smartmarket-db
+          property: connectionString
+      - key: DATABASE_URL_SYNC
+        fromDatabase:
+          name: smartmarket-db
+          property: connectionString
+      # REDIS_URL/CELERY_* keep their config.py defaults (unused — no worker
+      # deployed). If you later add a Redis instance + worker, override these.
+      - key: CORS_ORIGINS
+        value: '["https://smartmarket-frontend.onrender.com"]'
+      - key: UPLOAD_DIR
+        value: /opt/render/project/src/backend/storage/uploads
+      - key: REPORT_DIR
+        value: /opt/render/project/src/backend/storage/reports
+      - key: MAX_UPLOAD_SIZE_MB
+        value: "200"
+      - key: AUTH_RATE_LIMIT_PER_MINUTE
+        value: "10"
+
+  - type: web
+    name: smartmarket-frontend
+    runtime: node
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: NEXT_PUBLIC_API_URL
+        value: https://smartmarket-backend.onrender.com/api/v1

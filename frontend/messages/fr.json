@@ -1,0 +1,63 @@
+{
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "datasets": "Jeux de données",
+    "cleaning": "Nettoyage",
+    "analytics": "Analyses",
+    "kpis": "KPI",
+    "decisions": "Décisions",
+    "reports": "Rapports",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter"
+  },
+  "auth": {
+    "loginTitle": "Connexion",
+    "registerTitle": "Créer un compte",
+    "companyName": "Nom de l'entreprise",
+    "fullName": "Nom complet",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "loginButton": "Se connecter",
+    "registerButton": "Créer le compte",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "signUpLink": "Créer un compte",
+    "signInLink": "Se connecter",
+    "invalidCredentials": "E-mail ou mot de passe incorrect.",
+    "genericError": "Une erreur est survenue. Veuillez réessayer.",
+    "emailTaken": "Cette adresse e-mail est déjà utilisée."
+  },
+  "landing": {
+    "title": "SmartMarket DZ",
+    "subtitle": "La plateforme d'aide à la décision pour le marché algérien",
+    "description": "Transformez vos données brutes en recommandations concrètes et priorisées, validées statistiquement.",
+    "cta": "Commencer gratuitement",
+    "login": "Se connecter"
+  },
+  "datasets": {
+    "title": "Jeux de données",
+    "upload": "Importer un fichier",
+    "uploadHint": "Glissez-déposez un fichier CSV ou Excel, ou cliquez pour parcourir",
+    "empty": "Aucun jeu de données pour l'instant. Importez votre premier fichier pour commencer.",
+    "rows": "lignes",
+    "columns": "colonnes",
+    "status": {
+      "uploaded": "Importé",
+      "cleaning": "Nettoyage en cours",
+      "cleaned": "Nettoyé",
+      "analyzed": "Analysé",
+      "failed": "Échec"
+    }
+  },
+  "common": {
+    "loading": "Chargement…",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "retry": "Réessayer",
+    "error": "Une erreur est survenue"
+  }
+}

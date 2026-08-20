@@ -1,0 +1,63 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "datasets": "Datasets",
+    "cleaning": "Cleaning",
+    "analytics": "Analytics",
+    "kpis": "KPIs",
+    "decisions": "Decisions",
+    "reports": "Reports",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "registerTitle": "Create an account",
+    "companyName": "Company name",
+    "fullName": "Full name",
+    "email": "Email address",
+    "password": "Password",
+    "loginButton": "Log in",
+    "registerButton": "Create account",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "signUpLink": "Create an account",
+    "signInLink": "Log in",
+    "invalidCredentials": "Incorrect email or password.",
+    "genericError": "Something went wrong. Please try again.",
+    "emailTaken": "This email address is already in use."
+  },
+  "landing": {
+    "title": "SmartMarket DZ",
+    "subtitle": "The decision-support platform for the Algerian market",
+    "description": "Turn raw data into concrete, prioritized recommendations, backed by rigorous statistical validation.",
+    "cta": "Get started for free",
+    "login": "Log in"
+  },
+  "datasets": {
+    "title": "Datasets",
+    "upload": "Upload a file",
+    "uploadHint": "Drag and drop a CSV or Excel file, or click to browse",
+    "empty": "No datasets yet. Upload your first file to get started.",
+    "rows": "rows",
+    "columns": "columns",
+    "status": {
+      "uploaded": "Uploaded",
+      "cleaning": "Cleaning",
+      "cleaned": "Cleaned",
+      "analyzed": "Analyzed",
+      "failed": "Failed"
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "retry": "Retry",
+    "error": "Something went wrong"
+  }
+}
