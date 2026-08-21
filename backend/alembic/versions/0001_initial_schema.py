@@ -55,7 +55,7 @@ def upgrade() -> None:
     file_type = postgresql.ENUM("csv", "xlsx", name="file_type", create_type=False)
     file_type.create(op.get_bind(), checkfirst=True)
     dataset_status = postgresql.ENUM(
-        "uploaded", "cleaning", "cleaned", "analyzed", "failed", name="dataset_status"
+        "uploaded", "cleaning", "cleaned", "analyzed", "failed", name="dataset_status", create_type=False
     )
     dataset_status.create(op.get_bind(), checkfirst=True)
 
@@ -99,7 +99,7 @@ def upgrade() -> None:
 
     # --- cleaning_runs ------------------------------------------------
     cleaning_status = postgresql.ENUM(
-        "queued", "running", "completed", "failed", name="cleaning_status"
+        "queued", "running", "completed", "failed", name="cleaning_status", create_type=False
     )
     cleaning_status.create(op.get_bind(), checkfirst=True)
 
@@ -122,7 +122,7 @@ def upgrade() -> None:
     # --- analysis_jobs -----------------------------------------------
     job_type = postgresql.ENUM(
         "descriptive", "regression", "anova", "validation", "forecast",
-        "segmentation", "kpi", "decision", name="job_type",
+        "segmentation", "kpi", "decision", name="job_type", create_type=False,
     )
     job_type.create(op.get_bind(), checkfirst=True)
     job_status = postgresql.ENUM("queued", "running", "completed", "failed", name="job_status", create_type=False)
@@ -220,7 +220,7 @@ def upgrade() -> None:
     # --- kpis -------------------------------------------------------------
     kpi_type = postgresql.ENUM(
         "cltv", "churn", "take_rate", "cac", "wom", "revenue_growth", "gross_margin",
-        name="kpi_type",
+        name="kpi_type", create_type=False,
     )
     kpi_type.create(op.get_bind(), checkfirst=True)
 
@@ -247,7 +247,7 @@ def upgrade() -> None:
     decision_priority = postgresql.ENUM("high", "medium", "low", name="decision_priority", create_type=False)
     decision_priority.create(op.get_bind(), checkfirst=True)
     decision_status = postgresql.ENUM(
-        "open", "acknowledged", "applied", "dismissed", name="decision_status"
+        "open", "acknowledged", "applied", "dismissed", name="decision_status", create_type=False
     )
     decision_status.create(op.get_bind(), checkfirst=True)
 
