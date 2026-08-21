@@ -31,7 +31,7 @@ def upgrade() -> None:
     op.create_index("ix_companies_slug", "companies", ["slug"], unique=True)
 
     # --- users ---------------------------------------------------------
-    user_role = postgresql.ENUM("owner", "analyst", "viewer", name="user_role")
+    user_role = postgresql.ENUM("owner", "analyst", "viewer", name="user_role", create_type=False)
     user_role.create(op.get_bind(), checkfirst=True)
 
     op.create_table(
