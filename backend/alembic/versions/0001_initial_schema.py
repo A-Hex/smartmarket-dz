@@ -52,7 +52,7 @@ def upgrade() -> None:
     op.create_index("ix_users_email", "users", ["email"], unique=True)
 
     # --- datasets --------------------------------------------------------
-    file_type = postgresql.ENUM("csv", "xlsx", name="file_type")
+    file_type = postgresql.ENUM("csv", "xlsx", name="file_type", create_type=False)
     file_type.create(op.get_bind(), checkfirst=True)
     dataset_status = postgresql.ENUM(
         "uploaded", "cleaning", "cleaned", "analyzed", "failed", name="dataset_status"
@@ -125,7 +125,7 @@ def upgrade() -> None:
         "segmentation", "kpi", "decision", name="job_type",
     )
     job_type.create(op.get_bind(), checkfirst=True)
-    job_status = postgresql.ENUM("queued", "running", "completed", "failed", name="job_status")
+    job_status = postgresql.ENUM("queued", "running", "completed", "failed", name="job_status", create_type=False)
     job_status.create(op.get_bind(), checkfirst=True)
 
     op.create_table(
@@ -244,7 +244,7 @@ def upgrade() -> None:
     op.create_index("ix_kpis_dataset_id", "kpis", ["dataset_id"])
 
     # --- decisions ------------------------------------------------------
-    decision_priority = postgresql.ENUM("high", "medium", "low", name="decision_priority")
+    decision_priority = postgresql.ENUM("high", "medium", "low", name="decision_priority", create_type=False)
     decision_priority.create(op.get_bind(), checkfirst=True)
     decision_status = postgresql.ENUM(
         "open", "acknowledged", "applied", "dismissed", name="decision_status"
@@ -280,9 +280,9 @@ def upgrade() -> None:
     op.create_index("ix_decisions_source_job_id", "decisions", ["source_job_id"])
 
     # --- reports --------------------------------------------------------
-    report_type = postgresql.ENUM("executive", "raw_results", name="report_type")
+    report_type = postgresql.ENUM("executive", "raw_results", name="report_type", create_type=False)
     report_type.create(op.get_bind(), checkfirst=True)
-    report_format = postgresql.ENUM("pdf", "xlsx", name="report_format")
+    report_format = postgresql.ENUM("pdf", "xlsx", name="report_format", create_type=False)
     report_format.create(op.get_bind(), checkfirst=True)
 
     op.create_table(
