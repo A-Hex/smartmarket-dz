@@ -41,10 +41,10 @@ class AnalysisJob(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     dataset_id: Mapped[uuid.UUID] = mapped_column(
         GUID(), ForeignKey("datasets.id", ondelete="CASCADE"), nullable=False, index=True
     )
-    type: Mapped[JobType] = mapped_column(Enum(JobType, name="job_type"), nullable=False)
+    type: Mapped[JobType] = mapped_column(Enum(JobType, name="job_type", values_callable=lambda x: [e.value for e in x]), nullable=False)
     config: Mapped[dict[str, Any]] = mapped_column(JSONBType, default=dict, nullable=False)
     status: Mapped[JobStatus] = mapped_column(
-        Enum(JobStatus, name="job_status"), default=JobStatus.QUEUED, nullable=False
+        Enum(JobStatus, name="job_status", values_callable=lambda x: [e.value for e in x]), default=JobStatus.QUEUED, nullable=False
     )
     progress: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
     result: Mapped[Optional[dict[str, Any]]] = mapped_column(JSONBType, nullable=True)

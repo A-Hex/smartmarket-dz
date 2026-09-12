@@ -32,7 +32,7 @@ class KPI(Base, UUIDPrimaryKeyMixin):
     dataset_id: Mapped[uuid.UUID] = mapped_column(
         GUID(), ForeignKey("datasets.id", ondelete="CASCADE"), nullable=False, index=True
     )
-    kpi_type: Mapped[KPIType] = mapped_column(Enum(KPIType, name="kpi_type"), nullable=False)
+    kpi_type: Mapped[KPIType] = mapped_column(Enum(KPIType, name="kpi_type", values_callable=lambda x: [e.value for e in x]), nullable=False)
     value: Mapped[float] = mapped_column(Float, nullable=False)
     formula: Mapped[str] = mapped_column(String(500), nullable=False)
     computed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)

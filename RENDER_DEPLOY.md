@@ -1,5 +1,10 @@
 # Deploying to Render
 
+> **If you deployed before this fix**: an earlier version of this repo had a bug where every login/register
+> request returned a 500 on real Postgres (it worked fine locally against SQLite, which is precisely why it
+> shipped — see the main README's "A real production bug" section for the full story). If you're redeploying
+> after pulling the latest code, this is already fixed — just push and let Render redeploy.
+
 This repo includes a `render.yaml` Blueprint that provisions everything needed for a **preview/demo**
 deployment: a Postgres database, the FastAPI backend, and the Next.js frontend — all on Render's free tier.
 

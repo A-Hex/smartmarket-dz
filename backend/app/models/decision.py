@@ -39,7 +39,7 @@ class Decision(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         GUID(), ForeignKey("analysis_jobs.id", ondelete="CASCADE"), nullable=False, index=True
     )
     priority: Mapped[DecisionPriority] = mapped_column(
-        Enum(DecisionPriority, name="decision_priority"), nullable=False
+        Enum(DecisionPriority, name="decision_priority", values_callable=lambda x: [e.value for e in x]), nullable=False
     )
     category: Mapped[str] = mapped_column(String(100), nullable=False)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -47,5 +47,5 @@ class Decision(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     evidence: Mapped[dict[str, Any]] = mapped_column(JSONBType, default=dict, nullable=False)
     recommended_action: Mapped[str] = mapped_column(Text, nullable=False)
     status: Mapped[DecisionStatus] = mapped_column(
-        Enum(DecisionStatus, name="decision_status"), default=DecisionStatus.OPEN, nullable=False
+        Enum(DecisionStatus, name="decision_status", values_callable=lambda x: [e.value for e in x]), default=DecisionStatus.OPEN, nullable=False
     )

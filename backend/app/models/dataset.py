@@ -35,10 +35,10 @@ class Dataset(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     )
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     original_filename: Mapped[str] = mapped_column(String(500), nullable=False)
-    file_type: Mapped[FileType] = mapped_column(Enum(FileType, name="file_type"), nullable=False)
+    file_type: Mapped[FileType] = mapped_column(Enum(FileType, name="file_type", values_callable=lambda x: [e.value for e in x]), nullable=False)
     storage_path: Mapped[str] = mapped_column(String(1000), nullable=False)
     status: Mapped[DatasetStatus] = mapped_column(
-        Enum(DatasetStatus, name="dataset_status"), default=DatasetStatus.UPLOADED, nullable=False
+        Enum(DatasetStatus, name="dataset_status", values_callable=lambda x: [e.value for e in x]), default=DatasetStatus.UPLOADED, nullable=False
     )
     row_count: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     column_count: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)

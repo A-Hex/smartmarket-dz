@@ -28,6 +28,6 @@ class Report(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     company_id: Mapped[uuid.UUID] = mapped_column(
         GUID(), ForeignKey("companies.id", ondelete="CASCADE"), nullable=False, index=True
     )
-    type: Mapped[ReportType] = mapped_column(Enum(ReportType, name="report_type"), nullable=False)
-    format: Mapped[ReportFormat] = mapped_column(Enum(ReportFormat, name="report_format"), nullable=False)
+    type: Mapped[ReportType] = mapped_column(Enum(ReportType, name="report_type", values_callable=lambda x: [e.value for e in x]), nullable=False)
+    format: Mapped[ReportFormat] = mapped_column(Enum(ReportFormat, name="report_format", values_callable=lambda x: [e.value for e in x]), nullable=False)
     storage_path: Mapped[str] = mapped_column(String(1000), nullable=False)

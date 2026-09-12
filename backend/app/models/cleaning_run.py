@@ -29,7 +29,7 @@ class CleaningRun(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     )
     config: Mapped[dict[str, Any]] = mapped_column(JSONBType, default=dict, nullable=False)
     status: Mapped[CleaningStatus] = mapped_column(
-        Enum(CleaningStatus, name="cleaning_status"), default=CleaningStatus.QUEUED, nullable=False
+        Enum(CleaningStatus, name="cleaning_status", values_callable=lambda x: [e.value for e in x]), default=CleaningStatus.QUEUED, nullable=False
     )
     started_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
