@@ -10,6 +10,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.v1.router import api_router
 from app.core.config import settings
+from app.db.seed import seed
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("smartmarket")
@@ -64,6 +65,16 @@ def create_app() -> FastAPI:
                 }
             },
         )
+
+    @app.on_event("startup")
+    async def seed_demo_account() -> None:
+        """Ensure the documented demo account is available after each deployment."""
+        if settings.ENVIRONMENT == "production":
+            try:
+                await seed()
+                logger.info("demo_seed_complete")
+            except Exception:
+                logger.exception("demo_seed_failed")
 
     app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
