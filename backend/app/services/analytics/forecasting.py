@@ -19,6 +19,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.exponential_smoothing.ets import ETSModel
 from statsmodels.tsa.stattools import adfuller, kpss
 
@@ -144,18 +145,15 @@ def _metrics(actual, predicted) -> ForecastMetrics:
 
 
 def _fit_arima(train: pd.Series, test_len: int):
-    """Fit via pmdarima.auto_arima (AIC-selected, p,d,q capped at 5,2,5)."""
-    import pmdarima as pm
-
-    model = pm.auto_arima(
-        train.values,
-        start_p=0, start_q=0, max_p=5, max_d=2, max_q=5,
-        seasonal=False, stepwise=True, suppress_warnings=True,
-        error_action="ignore", information_criterion="aic",
-    )
-    order = model.order
-    test_forecast = model.predict(n_periods=test_len)
-    return model, order, np.asarray(test_forecast)
+    """Fit a bounded non-seasonal ARIMA without an expensive auto-search."""
+    last_error = None
+    for order in ((1, 1, 1), (1, 0, 1), (0, 1, 1)):
+        try:
+            model = ARIMA(train, order=order, trend=None).fit()
+            return model, order, np.asarray(model.forecast(test_len))
+        except Exception as exc:
+            last_error = exc
+    raise ForecastError(f"Impossible d'ajuster un modele ARIMA : {last_error}")
 
 
 def _fit_ets(train: pd.Series, test_len: int):
@@ -231,19 +229,14 @@ def compute_forecast(
     forecast_index = pd.date_range(series.index[-1] + pd.Timedelta(days=1), periods=horizon, freq="D")
 
     if best_model == "arima":
-        import pmdarima as pm
-
-        full_model = pm.auto_arima(
-            series.values, start_p=0, start_q=0, max_p=5, max_d=2, max_q=5,
-            seasonal=False, stepwise=True, suppress_warnings=True, error_action="ignore",
-        )
-        arima_order = full_model.order
-        point_80, ci_80 = full_model.predict(n_periods=horizon, return_conf_int=True, alpha=0.20)
-        _point_95, ci_95 = full_model.predict(n_periods=horizon, return_conf_int=True, alpha=0.05)
-        point = np.asarray(point_80)
-        ci_lower_80, ci_upper_80 = ci_80[:, 0], ci_80[:, 1]
-        ci_lower_95, ci_upper_95 = ci_95[:, 0], ci_95[:, 1]
-        history_fitted = full_model.predict_in_sample()
+        full_model = ARIMA(series, order=arima_order or (1, 1, 1), trend=None).fit()
+        arima_order = full_model.model.order
+        point = np.asarray(full_model.forecast(horizon))
+        ci_80 = full_model.get_forecast(horizon).conf_int(alpha=0.20)
+        ci_95 = full_model.get_forecast(horizon).conf_int(alpha=0.05)
+        ci_lower_80, ci_upper_80 = ci_80.iloc[:, 0].to_numpy(), ci_80.iloc[:, 1].to_numpy()
+        ci_lower_95, ci_upper_95 = ci_95.iloc[:, 0].to_numpy(), ci_95.iloc[:, 1].to_numpy()
+        history_fitted = np.asarray(full_model.predict(start=0, end=len(series) - 1))
     else:
         full_model = ETSModel(
             series, error="add",
